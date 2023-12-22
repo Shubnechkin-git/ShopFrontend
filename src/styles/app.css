@@ -1,0 +1,16 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    min-height: 100%;
+    /* Равно высоте подвала, */
+    /* но с учётом margin-bottom у последнего дочернего элемента */
+    margin-bottom: -50px;
+}
+
+.footer {
+    
+}
