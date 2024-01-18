@@ -10,7 +10,7 @@ export default function Search() {
             <InputGroup>
                 <Form.Control className="shadow-none"
                     id="inlineFormInputGroupUsername"
-                    placeholder="Username"
+                    placeholder="T-shirt"
                 />
                 <Button className='btn btn-dark'>Поиск</Button>
             </InputGroup>

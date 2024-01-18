@@ -10,27 +10,42 @@ import Catalog from "./Page/Catalog";
 import About from "./Page/About";
 import Cart from "./Page/Cart";
 import Profile from "./Page/Profile";
+import Product from "./Page/Product";
 
 
 function App() {
   const [state, setState] = useState(null);
 
   const callBackendAPI = async () => {
-    const response = await fetch('/express_backend');
+    // Создайте объект Headers
+    const headers = new Headers();
+
+    // Получите значение sessionId из куки (замените 'sessionId' на ваш реальный ключ куки)
+    const sessionId = document.cookie.replace(/(?:(?:^|.*;\s*)sessionId\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+    console.log(sessionId);
+    // Если sessionId найден, добавьте его к заголовкам
+    if (sessionId) {
+      headers.set('Cookie', `sessionId=${sessionId}`);
+    }
+
+    // Используйте объект Headers при создании запроса
+    const response = await fetch('/express_backend', { headers });
     const body = await response.json();
 
     if (response.status !== 200) {
       throw Error(body.message)
     }
+    console.log(body);
     return body;
   };
 
-  // получение GET маршрута с сервера Express, который соответствует GET из server.js 
+  // Получение GET маршрута с сервера Express, который соответствует GET из server.js 
   useEffect(() => {
     callBackendAPI()
       .then(res => setState(res.express))
       .catch(err => console.log(err));
-  }, [])
+  }, []);
   return (
     <>
       <BrowserRouter>
@@ -42,6 +57,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/product" element={<Product />} />
           </Routes>
         </div>
         <div className="wrapper mt-5 mb-5">

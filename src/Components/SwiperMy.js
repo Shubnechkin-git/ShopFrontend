@@ -40,10 +40,10 @@ export default function SwiperMy(props) {
             }}
         >
             <Swiper >
-                {props.data ? (
+                {Array.isArray(props.data) && props.data.length > 0 ? (
                     props.data.map((item, index) => (
                         <SwiperSlide key={index}>
-                            <Item img={item.img} price={item.price} title={item.title} />
+                            <Item pageRu={props.pageRu} pageEn={props.pageEn} category={props.category} img={item.img} price={item.price} title={item.title} />
                         </SwiperSlide>
                     ))
                 ) : (

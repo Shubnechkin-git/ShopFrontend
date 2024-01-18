@@ -5,3 +5,7 @@
 .form-control:focus {
     border: 3px solid black !important;
 }
+
+.card__item{
+    cursor: pointer;
+}

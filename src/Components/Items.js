@@ -4,52 +4,56 @@ import React, { useState, useEffect } from 'react';
 
 import SwiperMy from "../Components/SwiperMy";
 
-
 export default function Items() {
-    const [hotItems, setHotItems] = useState(null);
-    const [noveltyItems, setNoveltyItems] = useState(null);
-    const [discountItems, setDiscountItems] = useState(null);
+    const [hotItems, setHotItems] = useState([]);
+    const [noveltyItems, setNoveltyItems] = useState([]);
+    const [discountItems, setDiscountItems] = useState([]);
 
-    useEffect(() => {
+    const fetchData = () => {
         axios.get('/hot_items')
-            .then(function (response) {
-                // handle success
-                console.log(response.data);
+            .then(response => {
                 setHotItems(response.data);
             })
-            .catch(function (error) {
-                // handle error
+            .catch(error => {
                 console.log(error);
             });
+
         axios.get('/discount_items')
-            .then(function (response) {
-                // handle success
-                console.log(response.data);
+            .then(response => {
                 setDiscountItems(response.data);
             })
-            .catch(function (error) {
-                // handle error
+            .catch(error => {
                 console.log(error);
             });
+
         axios.get('/novelty_items')
-            .then(function (response) {
-                // handle success
-                console.log(response.data);
+            .then(response => {
                 setNoveltyItems(response.data);
             })
-            .catch(function (error) {
-                // handle error
+            .catch(error => {
                 console.log(error);
             });
+    };
+
+    useEffect(() => {
+        // Загрузка данных при монтировании
+        fetchData();
+
+        // Периодический опрос сервера каждые 5 секунд
+        const intervalId = setInterval(fetchData, 300000);
+
+        // Очистка интервала при размонтировании компонента
+        return () => clearInterval(intervalId);
     }, []);
+
     return (
         <div>
             <h1 className='text-center mt-5'>Популярные товары</h1>
-            <SwiperMy data={hotItems} />
+            <SwiperMy pageEn='/' pageRu='Главная' category="Популярные товары" data={hotItems} />
             <h1 className='text-center mt-5'>Новинки</h1>
-            <SwiperMy data={noveltyItems} />
+            <SwiperMy pageEn='/' pageRu='Главная' category="Новинки" data={noveltyItems} />
             <h1 className='text-center mt-5'>Скидки</h1>
-            <SwiperMy data={discountItems} />
-        </div >
-    )
-}
+            <SwiperMy pageEn='/' pageRu='Главная' category="Скидки" data={discountItems} />
+        </div>
+    );
+};
