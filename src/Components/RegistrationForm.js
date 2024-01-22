@@ -85,6 +85,8 @@ export default function RegistrationForm(props) {
                         .then(response => {
                             console.log(response);
                             // Дополнительная логика при успешной регистрации
+                            props.checkSession();
+                            props.setLoggedIn(true);
                         })
                         .catch(error => {
                             console.error(error.response);
@@ -126,6 +128,7 @@ export default function RegistrationForm(props) {
                                 <Form.Control
                                     type="email"
                                     onChange={(e) => setMail(e.target.value)}
+                                    onFocus={() => setEmailError('')}
                                     required
                                     placeholder="example@mail.com"
                                 />
