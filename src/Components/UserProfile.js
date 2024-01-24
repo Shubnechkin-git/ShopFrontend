@@ -21,8 +21,8 @@ const UserProfile = (props) => {
                                 <Card.Img variant="top" src="https://yt3.googleusercontent.com/ytc/AOPolaShhy6N3HJYzxeMCeiVGh1smHOlqcWa-PHNKxYT5w=s900-c-k-c0x00ffffff-no-rj" />
                             </Card.Header>
                             <Card.Body>
+                                <Card.Title>{userInfo.username}</Card.Title>
                                 <Card.Text className='d-flex flex-column'>
-                                    <Card.Title>{userInfo.username}</Card.Title>
                                     <span>Email: {userInfo.mail}</span>
                                     <span>Номер телефона: {userInfo.number}</span>
                                 </Card.Text>

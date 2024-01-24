@@ -139,6 +139,7 @@ export default function RegistrationForm(props) {
                                 <Form.Label>Номер телефона</Form.Label>
                                 <MaskedInput
                                     mask="+7 (999) 999-9999"
+                                    autocomplete="tel"
                                     placeholder="+7 (XXX) XXX-XXXX"
                                     onChange={(e) => setNumber(e.target.value)}
                                     onFocus={() => setPhoneError('')}
@@ -154,6 +155,7 @@ export default function RegistrationForm(props) {
                                     onChange={(e) => setPassword(e.target.value)}
                                     onFocus={() => setPasswordError('')}
                                     required
+                                    autoComplete="new-password"
                                     placeholder="********"
                                 />
                                 {passwordError && <span className="text-danger">{passwordError}</span>}
@@ -165,6 +167,7 @@ export default function RegistrationForm(props) {
                                     type="password"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     onFocus={() => setConfirmPasswordError('')}
+                                    autoComplete='new-password'
                                     required
                                     placeholder="********"
                                 />

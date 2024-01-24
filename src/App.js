@@ -12,7 +12,6 @@ import Cart from "./Page/Cart";
 import Profile from "./Page/Profile";
 import Product from "./Page/Product";
 
-
 function App() {
   const [state, setState] = useState(null);
 
@@ -44,8 +43,12 @@ function App() {
   useEffect(() => {
     callBackendAPI()
       .then(res => setState(res.express))
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        console.log("Response from server:", err.response); // Логирование ответа от сервера
+      });
   }, []);
+
   return (
     <>
       <BrowserRouter>
