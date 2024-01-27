@@ -1,0 +1,18 @@
+.jumbo{
+    background: url('../../assets/about/about.svg') no-repeat fixed bottom;
+    background-size: cover;
+    color: #efefef;
+    min-height: 400px;
+    position: relative;
+    z-index:-2;
+}
+.overlay{
+    background-color: #000;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}

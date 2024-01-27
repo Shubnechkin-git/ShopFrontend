@@ -10,7 +10,7 @@ export default function Items() {
     const [discountItems, setDiscountItems] = useState([]);
 
     const fetchData = () => {
-        axios.get('/hot_items')
+        axios.post('/hot_items')
             .then(response => {
                 setHotItems(response.data);
             })
@@ -18,7 +18,7 @@ export default function Items() {
                 console.log(error);
             });
 
-        axios.get('/discount_items')
+        axios.post('/discount_items')
             .then(response => {
                 setDiscountItems(response.data);
             })
@@ -26,7 +26,7 @@ export default function Items() {
                 console.log(error);
             });
 
-        axios.get('/novelty_items')
+        axios.post('/novelty_items')
             .then(response => {
                 setNoveltyItems(response.data);
             })

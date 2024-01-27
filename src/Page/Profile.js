@@ -32,9 +32,9 @@ export default function Profile() {
 
     const checkSession = async () => {
         try {
-            const response = await axios.get('/checkSession');
+            const response = await axios.post('/checkSession');
             if (response.data.success) {
-                const userResponse = await axios.get('/user');
+                const userResponse = await axios.post('/user');
                 setUserInfo(userResponse.data.user);
                 setLoggedIn(true);
             }

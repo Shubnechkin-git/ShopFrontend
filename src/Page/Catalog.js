@@ -11,7 +11,7 @@ export default function Catalog(props) {
 
 
   const fetchData = () => {
-    axios.get(`/catalog`)
+    axios.post(`/catalog`)
       .then(response => {
         console.log(response.data);
         setItems(response.data);
