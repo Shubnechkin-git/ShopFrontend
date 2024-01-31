@@ -16,7 +16,8 @@ export default function CatalogItems(props) {
                     title: props.title,
                     pageEn: '/catalog',
                     pageRu: '',
-                    category: 'Каталог'
+                    category: 'Каталог',
+                    productId: props.productId,
                 }}
             >
                 <div className='thumbs'>
@@ -25,7 +26,7 @@ export default function CatalogItems(props) {
                     </img>
                     <div className="caption__photo">
                         <span className="caprion__title fs-5 fw-bold text-uppercase">{props.title}</span>
-                        <span className="caption__info"><button className='btn btn-dark'>В КОРИЗНУ</button></span>
+                        <span className="caption__info"><button className='btn btn-dark'>ПОДРОБНЕЕ</button></span>
                     </div>
                     <div className='caption_price'>
                         <span>{props.price}руб.</span>
