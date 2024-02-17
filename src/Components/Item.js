@@ -7,7 +7,7 @@ import axios from 'axios';
 function Item(props) {
     const { img, title, price, category, pageRu, pageEn, productId } = props;
     const [show, setShow] = useState(false);
-    const [userInfo, setUserInfo] = useState(null);
+    const [message, setMessage] = useState('');
 
     const checkSession = async () => {
         try {
@@ -29,6 +29,7 @@ function Item(props) {
         try {
             const sessionInfo = await checkSession(); // Ожидаем результат проверки сеанса
             if (!sessionInfo.success) {
+                setMessage('Для добавления товара в корзину необходимо авторизоваться!');
                 setShow(true); // Показываем сообщение об ошибке
             } else {
                 setShow(false); // Скрываем сообщение об ошибке
@@ -42,6 +43,8 @@ function Item(props) {
                 const cartResponse = await axios.post('/cart', cartItem);
 
                 if (cartResponse.data.success) {
+                    setMessage(cartResponse.data.message)
+                    setShow(true);
                     console.log('Товар успешно добавлен в корзину', cartResponse.data);
                 } else {
                     console.error('Ошибка при добавлении товара в корзину', cartResponse.data);
@@ -49,6 +52,7 @@ function Item(props) {
             }
         } catch (error) {
             console.log(error);
+            setMessage(error.response.data.error);
             setShow(true);
         }
     };
@@ -91,7 +95,7 @@ function Item(props) {
                             <strong className="me-auto ms-2">GenaBooker</strong>
                             <small>Только что</small>
                         </Toast.Header>
-                        <Toast.Body>Для добавления товара в корзину, необходимо выполнить вход или регистрацию!</Toast.Body>
+                        <Toast.Body>{message}</Toast.Body>
                     </Toast >
                 </div>
                 <div className='card__btn'>
