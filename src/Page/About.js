@@ -18,7 +18,7 @@ export default function About() {
       <Row className='d-flex align-items-center'>
         <h2 className="text-center mb-4">Где мы?</h2>
         <Col className='col-12 col-sm-12 col-md-12 col-lg-6 col-xxl-6 col-xl-6 d-flex justify-content-center mt-2'>
-          <iframe title='map' src="https://yandex.ru/map-widget/v1/?um=constructor%3Afc1974f4c29873fbca3b30b4541d09804f90c9c5d4f9a4285a2ae53fa074a758&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
+          <iframe title='map' src="https://yandex.ru/map-widget/v1/?um=constructor%3Afc1974f4c29873fbca3b30b4541d09804f90c9c5d4f9a4285a2ae53fa074a758&amp;source=constructor" width="500" height="400" frameBorder="0"></iframe>
         </Col>
         <Col className='col-12 col-sm-12 col-md-12 col-lg-6 col-xxl-6 col-xl-6 d-flex align-content-center flex-column mt-2 col-sm-2 col-md-0 col-lg-0 col-xl-0 col-xxl-0'>
           <h2 className='text-center'>

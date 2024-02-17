@@ -44,7 +44,7 @@ export default function Catalog(props) {
         ) : (
           Array.isArray(items) && items.length > 0 ? (
             items.map((item) => (
-              <CatalogItems key={item.title} title={item.title} price={item.price} productId={item.id} img={item.image} />
+              <CatalogItems key={item.title} title={item.title} price={item.price} productId={item.id} img={item.img} />
             ))
           ) : (
             <p>Загрузка...</p>
