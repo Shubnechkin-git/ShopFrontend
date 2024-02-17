@@ -2,7 +2,7 @@ import Header from "./Components/Header"
 import Footer from "./Components/Footer"
 import "./styles/app.css"
 import "./styles/footer.css"
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import Home from "./Page/Home";
@@ -61,6 +61,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/product" element={<Product />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
         <div className="wrapper mt-5 mb-5">

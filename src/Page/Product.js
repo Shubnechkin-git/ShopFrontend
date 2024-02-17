@@ -60,6 +60,7 @@ export default function Product(props) {
       <div className='' product_id={productId} category={category}>
         <div className='d-flex flex-column align-items-start'>
           <div>Product</div>
+          <title>{title}</title>
           <Row className='mt-2 mb-2'>
             <span>
               {pageRu !== '' && (

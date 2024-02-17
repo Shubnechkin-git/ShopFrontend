@@ -55,6 +55,7 @@ export default function Profile() {
 
     return (
         <>
+            <title>Профиль</title>
             <div>Profile</div>
             <div>
                 {isCheckingSession ? (

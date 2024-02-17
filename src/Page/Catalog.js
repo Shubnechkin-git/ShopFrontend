@@ -9,7 +9,6 @@ export default function Catalog(props) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
   const fetchData = () => {
     axios.get(`/catalog`)
       .then(response => {
@@ -35,6 +34,7 @@ export default function Catalog(props) {
 
   return (
     <>
+      <title>Каталог</title>
       <div>Catalog</div>
       <Filters />
       <div className="mt-3"></div>

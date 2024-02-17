@@ -5,6 +5,7 @@ import '../styles/about.css'
 export default function About() {
   return (
     <>
+    <title>О Нас</title>
       <div>About</div>
       <div className="container-fluid d-flex text-center text-white align-items-center jumbo mt-3 mb-5">
         <div className='overlay'></div>
