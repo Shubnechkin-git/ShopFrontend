@@ -191,7 +191,7 @@ export default function RegistrationForm(props) {
                                 </span>
                             </Form.Group>
                             <Button variant="dark" onClick={handleRegister} type="button">
-                                Зарегестрироваться
+                                Зарегистрироваться
                             </Button>
                         </Form>
                     </Col>

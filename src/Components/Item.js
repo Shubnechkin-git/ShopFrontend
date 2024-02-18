@@ -37,7 +37,8 @@ function Item(props) {
                 const cartItem = {
                     product_id: props.productId,
                     category: props.category,
-                    user_info: sessionInfo.userInfo // Используем полученную информацию о пользователе
+                    user_info: sessionInfo.userInfo, // Используем полученную информацию о 
+                    count: 1
                 };
 
                 const cartResponse = await axios.post('/cart', cartItem);

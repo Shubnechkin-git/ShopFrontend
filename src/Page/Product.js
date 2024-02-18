@@ -52,7 +52,8 @@ export default function Product(props) {
         const cartItem = {
           product_id: productId,
           category: category,
-          user_info: sessionInfo.userInfo // Используем полученную информацию о пользователе
+          user_info: sessionInfo.userInfo, // Используем полученную информацию о пользователе
+          count: 1
         };
 
         console.log('cartItem', cartItem);
