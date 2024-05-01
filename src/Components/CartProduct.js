@@ -139,7 +139,7 @@ export default function CartProduct(props) {
 
     return (
         isVisible && (
-            <Card key={props.id} className="mb-3">
+            <Card key={props.id}  id={props.id} className="mb-3">
                 <Card.Header className='d-flex flex-column'>
                     <Card.Title className='text-center'>{props.title}</Card.Title>
                     <Image src={props.img} className="mb-2 me-2 mt-2 img-fluid" thumbnail />

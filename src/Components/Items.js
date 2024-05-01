@@ -13,7 +13,7 @@ export default function Items() {
         axios.post('/hot_items')
             .then(response => {
                 setHotItems(response.data);
-                console.log("items:",response.data);
+                console.log("items:", response.data);
             })
             .catch(error => {
                 console.log(error);
@@ -34,6 +34,7 @@ export default function Items() {
             .catch(error => {
                 console.log(error);
             });
+
     };
 
     useEffect(() => {

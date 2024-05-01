@@ -4,6 +4,7 @@ import "./styles/app.css"
 import "./styles/footer.css"
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import Home from "./Page/Home";
 import Catalog from "./Page/Catalog";
@@ -14,10 +15,26 @@ import Product from "./Page/Product";
 
 function App() {
   const [state, setState] = useState(null);
+  const [colors, setColors] = useState([null]);
 
   const callBackendAPI = async () => {
     // Создайте объект Headers
     const headers = new Headers();
+
+    axios.get('/getColor')
+      .then(response => {
+        console.log(response)
+        if (response.data.success) {
+          document.getElementsByTagName('header')[0].style.backgroundColor = response.data.colors[0].navbar;
+          document.getElementsByClassName('footer')[0].firstChild.style.backgroundColor = response.data.colors[0].footer;
+          document.getElementsByTagName('body')[0].style.backgroundColor = response.data.colors[0].background;
+          document.getElementsByTagName('body')[0].style.color = response.data.colors[0].text_color;
+          setColors(response.data.colors[0]);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
     // Получите значение sessionId из куки (замените 'sessionId' на ваш реальный ключ куки)
     const sessionId = document.cookie.replace(/(?:(?:^|.*;\s*)sessionId\s*=\s*([^;]*).*$)|^.*$/, "$1");
@@ -27,6 +44,7 @@ function App() {
     if (sessionId) {
       headers.set('Cookie', `sessionId=${sessionId}`);
     }
+
 
     // Используйте объект Headers при создании запроса
     const response = await fetch('/express_backend', { headers });
@@ -52,14 +70,14 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <Header />
         <div className="container">
-          <Header />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/about" element={<About />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile colors={colors} />} />
             <Route path="/product" element={<Product />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
@@ -70,6 +88,7 @@ function App() {
           <Footer />
         </div>
       </BrowserRouter>
+      
     </>
   );
 }

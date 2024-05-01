@@ -42,14 +42,14 @@ export default function SwiperMy(props) {
             <Swiper >
                 {Array.isArray(props.data) && props.data.length > 0 ? (
                     props.data.map((item, index) => (
-                        <SwiperSlide key={index}>
-                            <Item productId={item.id} pageRu={props.pageRu} pageEn={props.pageEn} category={props.category} img={item.img} price={item.price} title={item.title} />
-                        </SwiperSlide>
+                        item.available > 0 ? (<SwiperSlide key={index} >
+                            <Item productId={item.id} pageRu={props.pageRu} pageEn={props.pageEn} category={props.category} img={item.img} price={item.price} title={item.title} available={item.available} />
+                        </SwiperSlide>) : (null)
                     ))
                 ) : (
                     <p>Loading...</p>
                 )}
             </Swiper>
-        </Swiper>
+        </Swiper >
     )
 }

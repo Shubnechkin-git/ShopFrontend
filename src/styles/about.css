@@ -1,12 +1,13 @@
-.jumbo{
+.jumbo {
     background: url('../../assets/about/about.svg') no-repeat fixed bottom;
     background-size: cover;
     color: #efefef;
     min-height: 400px;
     position: relative;
-    z-index:-2;
+    z-index: -2;
 }
-.overlay{
+
+.overlay {
     background-color: #000;
     opacity: 0.5;
     position: absolute;
@@ -15,4 +16,9 @@
     right: 0;
     bottom: 0;
     z-index: -1;
+}
+
+.toast {
+    /* position: absolute;
+    z-index: 1000; */
 }

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Item(props) {
-    const { img, title, price, category, pageRu, pageEn, productId } = props;
+    const { img, title, price, category, pageRu, pageEn, productId, available } = props;
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -74,15 +74,17 @@ function Item(props) {
                         pageRu: pageRu,
                         pageEn: pageEn,
                         category: category,
-                        productId: productId
+                        productId: productId,
+                        available: available
                     }
                     }
                 >
                     <div className='card__img d-flex'>
                         <img alt='1' className='img-fluid' src={img} />
                     </div>
-                    <div className='card__price mt-2'>
+                    <div className='card__price mt-2 d-flex justify-content-between align-content-center'>
                         <span className='fw-bold fs-4'>{price} ₽</span>
+                        <span className='fw-bold fs-5'>В наличие:{available}</span>
                     </div>
                     <div className='card__title mb-3 mt-1'>{title}</div>
                 </Link>

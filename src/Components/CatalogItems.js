@@ -18,6 +18,7 @@ export default function CatalogItems(props) {
                     pageRu: '',
                     category: 'Каталог',
                     productId: props.productId,
+                    available: props.available
                 }}
             >
                 <div className='thumbs'>

@@ -4,7 +4,7 @@ import LoginForm from '../Components/LoginForm';
 import UserProfile from '../Components/UserProfile';
 import axios from 'axios';
 
-export default function Profile() {
+export default function Profile(props) {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
     const [isCheckingSession, setCheckingSession] = useState(true);
@@ -56,7 +56,6 @@ export default function Profile() {
     return (
         <>
             <title>Профиль</title>
-            <div>Profile</div>
             <div>
                 {isCheckingSession ? (
                     // Пока выполняется проверка сессии, ничего не отображаем
@@ -65,6 +64,7 @@ export default function Profile() {
                     userInfo ? (
                         <UserProfile
                             setLoggedIn={setLoggedIn}
+                            colors={props.colors}
                             userInfo={userInfo}
                             handleLogout={handleLogout}
                         />

@@ -7,7 +7,6 @@ export default function Home() {
     return (
         <>
             <title>Главная</title>
-            <div>Home</div>
             <Search />
             <Items />
         </>

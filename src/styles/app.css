@@ -11,6 +11,8 @@ body {
     margin-bottom: -50px;
 }
 
-.footer {
-    
+.footer {}
+
+.hidden {
+    display: none;
 }

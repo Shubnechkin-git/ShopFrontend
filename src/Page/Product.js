@@ -21,7 +21,7 @@ export default function Product(props) {
     return <div>Загрузка данных...</div>;
   }
 
-  const { img, price, title, category, pageRu, pageEn, productId, } = location.state;
+  const { img, price, title, category, pageRu, pageEn, productId, available } = location.state;
 
   const checkSession = async () => {
     try {
@@ -78,7 +78,6 @@ export default function Product(props) {
   return (
     <div className='' product_id={productId} category={category}>
       <div className='d-flex flex-column align-items-start'>
-        <div>Product</div>
         <title>{title}</title>
         <Row className='mt-2 mb-2'>
           <span>
@@ -99,6 +98,7 @@ export default function Product(props) {
           <Col className=' text-md-center text-sm-start text-lg-start col-12 col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-6'>
             <h2 className='text-uppercase fw-bold'>{title}</h2>
             <h2 className='text-uppercase fw-bold mt-3'>{price} руб.</h2>
+            <h5 className='text-uppercase fw-bold mt-3'>В наличие: {available}</h5>
             <span className='fs-4'>
               Sunt cillum velit commodo proident cupidatat nisi nulla culpa nisi ullamco nostrud. Labore exercitation pariatur consequat voluptate laborum eiusmod est laboris aute non minim. Eu consequat veniam in aliquip mollit. Deserunt magna dolore anim non ex ipsum nulla.
             </span>

@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
     return (
-        <header className='pt-2 pb-2 mb-5'>
+        <header className='container pt-2 mb-5'>
             <Navbar expand="lg">
-                <Container>
+                <Container className=" pb-2 ">
                     <Navbar.Brand>
                         <Link className="text-decoration-none fs-2 fw-bold text-black nav-link" to="/">
                             <div className='header__logo'>

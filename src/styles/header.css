@@ -2,7 +2,7 @@ header {
     border-bottom: 3px solid black !important;
 }
 
-.header__link a{
+.header__link a {
     transition: all 0.5s;
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
@@ -11,17 +11,15 @@ header {
 }
 
 .header__link a:hover {
-   transform: translateY(-5px);
-   -webkit-transform: translateY(-5px);
-   -moz-transform: translateY(-5px);
-   -ms-transform: translateY(-5px);
-   -o-transform: translateY(-5px);
+    transform: translateY(-5px);
+    -webkit-transform: translateY(-5px);
+    -moz-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    -o-transform: translateY(-5px);
 }
 
 .navbar button {
     border-color: black;
 }
 
-.navbar-toggler-icon{
-    
-}
+.navbar-toggler-icon {}

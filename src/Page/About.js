@@ -1,12 +1,89 @@
-import React from 'react'
-import { Row, Col } from "react-bootstrap"
+import React, { useState } from 'react'
+import { Row, Col, Form, Toast, Button, ToastContainer } from "react-bootstrap"
 import '../styles/about.css'
+import MaskedInput from 'react-input-mask';
 
-export default function About() {
+import axios from 'axios';
+
+export default function About(props) {
+  const [username, setUsername] = useState('');
+  const [mail, setMail] = useState('');
+  const [number, setNumber] = useState('');
+  const [text, setText] = useState('');
+
+  const [show, setShow] = useState(false);
+
+  const [usernameError, setUsernameError] = useState('');
+  const [phoneError, setPhoneError] = useState();
+  const [emailError, setEmailError] = useState('');
+  const [enterAllInputError, setEnterAllInputError] = useState('');
+  const [textError, setTextError] = useState('');
+
+  const [message, setMessage] = useState('');
+
+  const handleForm = () => {
+    // Ваша логика валидации
+    setUsernameError('');
+    setPhoneError('');
+    setEmailError('');
+    setEnterAllInputError('');
+    setTextError('');
+
+    // Пример простой проверки, замените на вашу логику
+    if (!username || !mail || !number || !text) {
+      setEnterAllInputError('Заполните все поля!');
+      return;
+    }
+
+    if (username.length < 4) {
+      setUsernameError('Имя пользователя должно содержать как минимум 4 символа.');
+      return;
+    }
+
+    if (text.length < 50) {
+      setTextError('Сообщение должно содержать как минимум 50 символов.');
+      return;
+    }
+    // Проверка, что номер телефона соответствует ожидаемому формату
+    const phoneRegex = /^\+\d\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/;
+    if (!phoneRegex.test(number)) {
+      setPhoneError('Некорректный формат номера телефона.');
+      return;
+    }
+
+
+    // Пример валидации электронной почты
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(mail)) {
+      setEmailError('Некорректный адрес электронной почты.');
+      return;
+    }
+
+    axios.post('/send_email', { type: 'contact', username, mail, number, text }).then(response => {
+      setUsername('');
+      setMail('');
+      setNumber('');
+      setText('');
+      if (response.data.success) {
+        setShow(true);
+        setMessage(response.data.message);
+      }
+      console.log(response);
+    }).catch(error => {
+      setShow(true);
+      setMessage(error.response.data.message);
+      console.log(error);
+    });
+  }
+
+  const handleText = (e) => {
+    let text = e.target.value.slice(0, 3000);
+    setText(text);
+  }
+
   return (
     <>
-    <title>О Нас</title>
-      <div>About</div>
+      <title>О Нас</title>
       <div className="container-fluid d-flex text-center text-white align-items-center jumbo mt-3 mb-5">
         <div className='overlay'></div>
         <div className="container p-5">
@@ -15,6 +92,74 @@ export default function About() {
           </h2>
         </div>
       </div>
+      <Row className='mb-4 '>
+        <h2 className='text-center'>Связаться с нами</h2>
+        <div className='text-center'>
+          <span className="fs-1 text-danger">{enterAllInputError}</span>
+        </div>
+        <Col className='col-12 d-flex justify-content-center'>
+          <Col className='col-9 col-sm-9 col-md-8 col-lg-6'>
+            <Form className='d-flex flex-column'>
+              <Form.Group className="mb-3" controlId="formBasicUsername">
+                <Form.Label>Имя</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                  onFocus={() => setUsernameError('')}
+                  required
+                  value={username}
+                  placeholder="Ivan"
+                />
+                <span className="text-danger">{usernameError}</span>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Электронная почта</Form.Label>
+                <Form.Control
+                  type="email"
+                  onChange={(e) => setMail(e.target.value)}
+                  onFocus={() => setEmailError('')}
+                  required
+                  value={mail}
+                  placeholder="example@mail.com"
+                />
+                {emailError && <span className="text-danger">{emailError}</span>}
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicNumber">
+                <Form.Label>Номер телефона</Form.Label>
+                <MaskedInput
+                  mask="+7 (999) 999-99-99"
+                  autoComplete="tel"
+                  placeholder="+7 (XXX) XXX-XX-XX"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                  onFocus={() => setPhoneError('')}
+                  className={`form-control ${phoneError ? 'is-invalid' : ''}`}
+                />
+                <span className="text-danger">{phoneError}</span>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicNumber">
+                <Form.Label>Ваше сообщение</Form.Label>
+                <textarea
+                  onChange={(e) => handleText(e)}
+                  onFocus={() => setTextError('')}
+                  value={text}
+                  placeholder='Здравствуйте! У меня появился такой вопрос...'
+                  rows={5}
+                  className={`form-control ${textError ? 'is-invalid' : ''}`}
+                />
+                <span>{text.length}/3000</span><br />
+                <span className="text-danger">{textError}</span>
+              </Form.Group>
+              <Button variant="dark" onClick={handleForm} type="button">
+                Отправить
+              </Button>
+            </Form>
+          </Col>
+        </Col>
+      </Row >
       <Row className='d-flex align-items-center'>
         <h2 className="text-center mb-4">Где мы?</h2>
         <Col className='col-12 col-sm-12 col-md-12 col-lg-6 col-xxl-6 col-xl-6 d-flex justify-content-center mt-2'>
@@ -65,6 +210,16 @@ export default function About() {
           </div>
         </Col>
       </Row >
+      <ToastContainer className='position-fixed mb-2 me-2' position="bottom-end">
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} bg={message === 'Ошибка повторите позже!' ? 'danger' : 'success'} autohide>
+          <Toast.Header>
+            <div className="header__logo me-2"><svg width="15" height="15" viewBox="0 0 63 58" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30.1279 21.8721L17.6768 22.918V14.2021L12.6963 14.6006V44.4834L17.6768 44.085V40.3496L15.1865 40.5488V28.0977L30.1279 26.8525V55.4902L0.245117 57.9805V3.19531L30.1279 0.705078V21.8721Z" fill="black"></path><path d="M45.0693 44.4834L50.0498 44.085V35.3691L45.0693 35.7676V44.4834ZM50.0498 14.2021L45.0693 14.6006V23.3164L50.0498 22.918V14.2021ZM62.501 31.833V55.4902L32.6182 57.9805V3.19531L62.501 0.705078V24.3623L58.7656 28.0977L62.501 31.833Z" fill="black"></path></svg></div>
+            <strong className="me-auto ">GenaBooker</strong>
+            <small>Только что</small>
+          </Toast.Header>
+          <Toast.Body className='text-white'>{message}</Toast.Body>
+        </Toast>
+      </ToastContainer >
     </>
   )
 }
