@@ -61,9 +61,9 @@ function Item(props) {
 
     return (
         <>
-            <div className='card__item mt-4 mb-4 d-flex flex-column' category={category} product_id={productId}>
+            <div className='card__item mt-4 mb-4 d-flex flex-column h-100' category={category} product_id={productId}>
                 <Link
-                    className="text-decoration-none fs-2 fw-bold text-black nav-link"
+                    className="text-decoration-none h-100 fs-2 fw-bold text-black nav-link"
                     to={{
                         pathname: `/product`,
                     }}
@@ -79,7 +79,7 @@ function Item(props) {
                     }
                     }
                 >
-                    <div className='card__img d-flex'>
+                    <div className='card__img h-100 d-flex'>
                         <img alt='1' className='img-fluid' src={img} />
                     </div>
                     <div className='card__price mt-2 d-flex justify-content-between align-content-center'>

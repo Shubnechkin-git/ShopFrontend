@@ -48,14 +48,39 @@ export default function Items() {
         return () => clearInterval(intervalId);
     }, []);
 
+    console.log(hotItems);
+    console.log(discountItems);
+    console.log(noveltyItems);
     return (
-        <div>
-            <h1 className='text-center mt-5'>Популярные товары</h1>
-            <SwiperMy pageEn='/' pageRu='Главная' category="Популярные товары" data={hotItems} />
-            <h1 className='text-center mt-5'>Новинки</h1>
-            <SwiperMy pageEn='/' pageRu='Главная' category="Новинки" data={noveltyItems} />
-            <h1 className='text-center mt-5'>Скидки</h1>
-            <SwiperMy pageEn='/' pageRu='Главная' category="Скидки" data={discountItems} />
-        </div>
+        hotItems.length > 0 || noveltyItems.length > 0 || discountItems.length > 0 ? (
+            <div>
+                {
+                    hotItems.length ? (
+                        <>
+                            <h1 className='text-center mt-5'>Популярные товары</h1>
+                            <SwiperMy pageEn='/' pageRu='Главная' category="Популярные товары" data={hotItems} />
+                        </>
+                    ) : (null)
+                }
+                {
+                    noveltyItems.length ? (
+                        <>
+                            <h1 className='text-center mt-5'>Новинки</h1>
+                            <SwiperMy pageEn='/' pageRu='Главная' category="Новинки" data={noveltyItems} />
+                        </>
+                    ) : (null)
+                }
+                {
+                    discountItems.length ? (
+                        <>
+                            <h1 className='text-center mt-5'>Скидки</h1>
+                            <SwiperMy pageEn='/' pageRu='Главная' category="Скидки" data={discountItems} />
+                        </>
+                    ) : (null)
+                }
+            </div>
+        ) : (
+            null
+        )
     );
 };

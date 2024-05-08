@@ -6,7 +6,7 @@ export default function CatalogItems(props) {
     return (
         <Col className="card_item col-sm-12 col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 mb-5">
             <Link
-                className="text-decoration-none fs-2 fw-bold text-black nav-link"
+                className="text-decoration-none h-100 fs-2 fw-bold text-black nav-link"
                 to={{
                     pathname: `/product`,
                 }}
@@ -21,8 +21,8 @@ export default function CatalogItems(props) {
                     available: props.available
                 }}
             >
-                <div className='thumbs'>
-                    <img src={props.img} className='img-fluid'
+                <div className='thumbs h-100'>
+                    <img src={props.img} className='img-fluid h-100'
                         alt='product_photo'>
                     </img>
                     <div className="caption__photo">

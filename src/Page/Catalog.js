@@ -44,7 +44,7 @@ export default function Catalog(props) {
           Array.isArray(items) && items.length > 0 ? (
             items.map((item) => (
               item.available > 0 && (
-                < CatalogItems key={item.title} available={item.available} title={item.title} price={item.price} productId={item.id} img={item.img} />
+                <CatalogItems key={item.title} available={item.available} title={item.title} price={item.price} productId={item.id} img={item.img} />
               )
             ))
           ) : (

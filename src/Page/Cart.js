@@ -27,6 +27,8 @@ export default function Cart() {
     fetchData();
   }, []);
 
+  let id = [];
+
   useEffect(() => {
     // После каждого обновления корзины пересчитываем общую цену и количество товаров
     let totalPrice = 0;
@@ -52,7 +54,6 @@ export default function Cart() {
           totalItems += item.count;
           totalPrice += item.total_price;
         });
-
         setCartCount(totalItems);
         setCartPrice(totalPrice);
       } else {
@@ -65,6 +66,7 @@ export default function Cart() {
       setIsLoading(false);
     }
   };
+
 
   const removeFromCart = (id) => {
     console.log("Removing:", id);
@@ -91,6 +93,12 @@ export default function Cart() {
     const nameRegex = /^[a-zA-Zа-яА-Я]+$/;
     // Validation for last name, first name, and middle name (assuming they only contain letters)
     setLastnameError('')
+
+    let id = [];
+
+    cartItems.forEach((item, index) => {
+      id[index] = item.id;
+    });
 
     if (!lastname) {
       setLastnameError('Фамилия не может быть пустой.');
@@ -140,21 +148,31 @@ export default function Cart() {
       return;
     } else setAddressError('');
 
-    axios.post('/send_email', { type: 'order', lastname, firstname, patrynomic, email, tel, address }).then(response => {
-      if (response.data.success) {
-        setShow(true);
-        setLastname('');
-        setFirstname('');
-        setPatrynomic('');
-        setEmail('');
-        setTel('');
-        setAdress('');
-        setMessage(response.data.message);
-      }
+    axios.put('/change_status', { cart_id: id, status: "processing" }).then(response => {
       console.log(response);
+      if (response.data.success) {
+        axios.post('/send_email', { type: 'order', lastname, firstname, patrynomic, email, tel, address, cartItems }).then(response => {
+          if (response.data.success) {
+            setShow(true);
+            setLastname('');
+            setFirstname('');
+            setPatrynomic('');
+            setEmail('');
+            setTel('');
+            setAdress('');
+            setMessage(response.data.message);
+            setTimeout(() => {
+              fetchData();
+            }, 3000)
+          }
+          console.log(response);
+        }).catch(error => {
+          setShow(true);
+          setMessage(error.response.data.message);
+          console.log(error);
+        });
+      }
     }).catch(error => {
-      setShow(true);
-      setMessage(error.response.data.message);
       console.log(error);
     });
 
@@ -184,7 +202,7 @@ export default function Cart() {
         cartItems.length > 0 ? (
           <div>
             <h2>Ваша корзина:</h2>
-            <Row>
+            <Row className='row-gap-3 mt-3 mb-3'>
               {cartItems.map(item => (
                 <Col className='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 mb-2'>
                   <CartProduct
@@ -212,23 +230,23 @@ export default function Cart() {
                   <div className='mb-3'>
                     <label forh="lastname">Фамлия</label>
                     <input className={`form-control ${lastnameError ? 'is-invalid' : ''}`}
-                      onFocus={() => setLastnameError('')} onChange={(e) => setLastname(e.target.value)} value={lastname} type="text" id="lastname" required />
+                      onFocus={() => setLastnameError('')} onChange={(e) => setLastname(e.target.value)} value={lastname} placeholder='Иванов' type="text" id="lastname" required />
 
                     <span className='text-danger'>{lastnameError}</span>
                   </div>
                   <div className='mb-3'>
                     <label forh="firstname">Имя</label>
-                    <input className={`form-control ${firstnameError ? 'is-invalid' : ''}`} onFocus={() => setFirstnameError('')} onChange={(e) => setFirstname(e.target.value)} value={firstname} type="text" id="firstname" required />
+                    <input className={`form-control ${firstnameError ? 'is-invalid' : ''}`} placeholder="Иван" onFocus={() => setFirstnameError('')} onChange={(e) => setFirstname(e.target.value)} value={firstname} type="text" id="firstname" required />
                     <span className='text-danger'>{firstnameError}</span>
                   </div>
                   <div className='mb-3'>
                     <label forh="patrynomic">Отчесвто</label>
-                    <input className={`form-control ${patrynomicError ? 'is-invalid' : ''}`} onFocus={() => setPatrynomicError('')} onChange={(e) => setPatrynomic(e.target.value)} value={patrynomic} type="text" id="patrynomic" required />
+                    <input className={`form-control ${patrynomicError ? 'is-invalid' : ''}`} placeholder="Иванович" onFocus={() => setPatrynomicError('')} onChange={(e) => setPatrynomic(e.target.value)} value={patrynomic} type="text" id="patrynomic" required />
                     <span className='text-danger'>{patrynomicError}</span>
                   </div>
                   <div className='mb-3'>
                     <label forh="email">Email</label>
-                    <input className={`form-control ${emailError ? 'is-invalid' : ''}`} onFocus={() => setEmailError('')} onChange={(e) => setEmail(e.target.value)} value={email} type="email" id="email" required />
+                    <input className={`form-control ${emailError ? 'is-invalid' : ''}`} placeholder="example@example.com" onFocus={() => setEmailError('')} onChange={(e) => setEmail(e.target.value)} value={email} type="email" id="email" required />
                     <span className='text-danger'>{emailError}</span>
                   </div>
                   <div className='mb-3'>
@@ -248,7 +266,7 @@ export default function Cart() {
                   </div>
                   <div className='mb-3'>
                     <label forh="address">Адрес</label>
-                    <input className={`form-control ${addressError ? 'is-invalid' : ''}`} onFocus={() => setAddressError('')} onChange={(e) => setAdress(e.target.value)} value={address} type="text" id="address" required />
+                    <input className={`form-control ${addressError ? 'is-invalid' : ''}`} placeholder="г. Ижевск, ул. Пушкина, д.27" onFocus={() => setAddressError('')} onChange={(e) => setAdress(e.target.value)} value={address} type="text" id="address" required />
                     <span className='text-danger'>{addressError}</span>
                   </div>
                 </Col>
