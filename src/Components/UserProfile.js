@@ -10,12 +10,28 @@ export default function UserProfile(props) {
     const [delValue, setDelValue] = useState(null);
     const [newTitle, setNewTitle] = useState('');
     const [newPriceValue, setNewPriceValue] = useState(null);
+    const [newAvilable, setNewAvilable] = useState(null);
+
+    const [delError, setDelError] = useState(null);
+
     const [editPriceValue, setEditPriceValue] = useState(null);
     const [editIdValue, setEditIdValue] = useState(null);
     const [editAvilable, setEditAvilable] = useState(null);
-    const [newAvilable, setNewAvilable] = useState(null);
+    const [editTitle, setEditTitle] = useState('');
+    const [editImage, setEditImage] = useState(null);
+
+    const [editIdValueError, setEditIdValueError] = useState('');
+    const [editAvilableError, setEditAvilableError] = useState('');
+    const [editPriceError, setEditPriceError] = useState('');
+    const [editTitleError, setEditTitleError] = useState('');
+    const [editImageError, setEditImageError] = useState('');
+    const [editImageBase64, setEditImageBase64] = useState(null);
+    const fileEditInputRef = useRef(null);
+
 
     const [table, setTable] = useState('discounts');
+    const [editTable, setEditTable] = useState('discounts');
+    const [delTable, setDelTable] = useState('discounts');
 
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState('');
@@ -128,10 +144,6 @@ export default function UserProfile(props) {
         else setNewAvilable(1)
     }
 
-    const handleDelete = () => {
-        console.log(delValue);
-    }
-
     const changeColor = (k) => {
         switch (k) {
             case 1:
@@ -173,21 +185,36 @@ export default function UserProfile(props) {
         }
     }
 
-    const handleImageChange = (event) => {
+    const handleImageChange = (event, k) => {
         const file = event.target.files[0];
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         if (file !== undefined) {
             if (!allowedTypes.includes(file.type)) {
-                setImageError('Пожалуйста, выберите изображение');
+                if (k === 1) {
+                    setImageError('Пожалуйста, выберите изображение');
+                } else if (k === 2) {
+                    setEditImageError('Пожалуйста, выберите изображение');
+                }
                 return;
             }
-            setImageError('');
-            setImage(file);
+            if (k === 1) {
+                setImageError('');
+                setImage(file);
+            } else if (k === 2) {
+                setEditImage(file);
+                setEditImageError('');
+            }
+
+            console.log(file);
 
             // Дальнейшая обработка файла
             const reader = new FileReader();
             reader.onload = () => {
-                setImageBase64(reader.result);
+                if (k === 1) {
+                    setImageBase64(reader.result);
+                } else if (k === 2) {
+                    setEditImageBase64(reader.result);
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -222,6 +249,72 @@ export default function UserProfile(props) {
 
         if (!error) {
             axios.post('/add_product', { newTitle, newPriceValue, newAvilable, imageBase64, table }).then(response => {
+                console.log(response.data);
+                if (response.data.success) {
+                    setShow(true);
+                    fetchData();
+                    setMessage(response.data.message);
+                }
+            }).catch(error => {
+                console.log(error.response.data);
+                setShow(true);
+                setMessage(error.response.data.message);
+            });
+        }
+    }
+
+    const handleChange = () => {
+        let error = false;
+
+        if (editIdValue == null) {
+            setEditIdValueError(true);
+            error = true;
+        } else setEditIdValueError(false);
+
+        if (editTitle.length < 6) {
+            setEditTitleError(true);
+            error = true;
+        } else setEditTitleError(false);
+
+        if (editPriceValue == null) {
+            setEditPriceError(true);
+            error = true;
+        } else setEditPriceError(false);
+
+        if (editAvilable == null) {
+            setEditAvilableError(true);
+            error = true;
+        } else setEditAvilableError(false);
+
+        if (editImage == null) {
+            setEditImageError(true);
+            setEditImageBase64(null);
+            error = true;
+        } else setEditImageError(false);
+
+        if (!error) {
+            axios.put('/edit_product', { id: editIdValue, title: editTitle, price: editPriceValue, available: editAvilable, img: editImageBase64, table: editTable }).then(response => {
+                console.log(response.data);
+                if (response.data.success) {
+                    setShow(true);
+                    fetchData();
+                    setMessage(response.data.message);
+                }
+            }).catch(error => {
+                console.log(error.response.data);
+                setShow(true);
+                setMessage(error.response.data.message);
+            });
+        }
+
+    }
+
+    const handleDelete = (e) => {
+        if (delValue == null) {
+            setDelError(true);
+        } else {
+            setDelError(false);
+            axios.delete('/del_product', { params: { id: delValue, table: delTable } }).then(response => {
                 console.log(response.data);
                 if (response.data.success) {
                     setShow(true);
@@ -395,14 +488,14 @@ export default function UserProfile(props) {
                                                 </select>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <div className='d-flex'>
+                                                <div className='d-flex w-100'>
                                                     <label className="input-group-text">Название</label>
                                                     <input type="text" onChange={e => setNewTitle(e.target.value)} value={newTitle} className="form-control" placeholder="Кроссовки" aria-label="Recipient's username" />
                                                 </div>
                                                 <small className="text-danger mt-2">{titleError && 'Пожалуйста, введите название не менее 6-ти символов'}</small>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <div className='d-flex'>
+                                                <div className='d-flex w-100'>
                                                     <label className="input-group-text">Цена за шт.</label>
                                                     <input type="number" onChange={(e) => { handleNewPrice(e) }} className="form-control" placeholder="2000" value={newPriceValue} aria-label="Recipient's username" />
                                                     <label className="input-group-text">₽</label>
@@ -410,7 +503,7 @@ export default function UserProfile(props) {
                                                 <small className="text-danger mt-2">{priceError && 'Пожалуйста, введите цену'}</small>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <div className='d-flex'>
+                                                <div className='d-flex w-100'>
                                                     <label className="input-group-text">В наличие</label>
                                                     <input type="number" onChange={(e) => { handleNewAvilable(e) }} className="form-control" placeholder="100" value={newAvilable} aria-label="Recipient's username" />
                                                     <label className="input-group-text">шт.</label>
@@ -418,9 +511,9 @@ export default function UserProfile(props) {
                                                 <small className="text-danger mt-2">{newAvilableError && 'Пожалуйста, введите количесвто товара'}</small>
                                             </div>
                                             <div className="input-group mb-3 d-flex flex-column">
-                                                <div className='d-flex'>
+                                                <div className='d-flex w-100'>
                                                     <label className="input-group-text">Изображение</label>
-                                                    <input type="file" className="form-control" ref={fileInputRef} accept="image/*" placeholder="" onChange={handleImageChange} />
+                                                    <input type="file" className="form-control" ref={fileInputRef} accept="image/*" placeholder="" onChange={e => handleImageChange(e, 1)} />
                                                 </div>
                                                 <small className="text-danger mt-2">{imageError && 'Пожалуйста, выберите изображение'}</small>
                                             </div>
@@ -447,37 +540,52 @@ export default function UserProfile(props) {
                                                 </select>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <label className="input-group-text">ID</label>
-                                                <input type="text" className="form-control" onChange={(e) => handleEditId(e)} value={editIdValue} placeholder="1" aria-label="Recipient's username" />
+                                                <div className='d-flex w-100'>
+                                                    <label className="input-group-text">ID</label>
+                                                    <input type="text" className="form-control" onChange={(e) => handleEditId(e)} value={editIdValue} placeholder="1" aria-label="Recipient's username" />
+                                                </div>
+                                                <small className="text-danger mt-2">{editIdValueError && 'Пожалуйста, введите ID товара больше 0'}</small>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <label className="input-group-text">Название</label>
-                                                <input type="text" className="form-control" placeholder="Кроссовки" aria-label="Recipient's username" />
+                                                <div className='d-flex w-100'>
+                                                    <label className="input-group-text">Название</label>
+                                                    <input type="text" className="form-control" placeholder="Кроссовки" onChange={e => setEditTitle(e.target.value)} value={editTitle} aria-label="Recipient's username" />
+                                                </div>
+                                                <small className="text-danger mt-2">{editTitleError && 'Пожалуйста, введите название не менее 6-ти символов'}</small>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <label className="input-group-text">Цена за шт.</label>
-                                                <input type="number" className="form-control" onChange={(e) => { handleEditPrice(e) }} value={editPriceValue} placeholder="2000" aria-label="Recipient's username2" />
-                                                <label className="input-group-text">₽</label>
+                                                <div className='d-flex w-100'>
+                                                    <label className="input-group-text">Цена за шт.</label>
+                                                    <input type="number" className="form-control" onChange={(e) => { handleEditPrice(e) }} value={editPriceValue} placeholder="2000" aria-label="Recipient's username2" />
+                                                    <label className="input-group-text">₽</label>
+                                                </div>
+                                                <small className="text-danger mt-2">{editPriceError && 'Пожалуйста, введите цену'}</small>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <label className="input-group-text">В наличие</label>
-                                                <input type="number" className="form-control" onChange={(e) => { handleEditAvilable(e) }} value={editAvilable} placeholder="100" aria-label="Recipient's username2" />
-                                                <label className="input-group-text">шт.</label>
+                                                <div className='d-flex w-100'>
+                                                    <label className="input-group-text">В наличие</label>
+                                                    <input type="number" className="form-control" onChange={(e) => { handleEditAvilable(e) }} value={editAvilable} placeholder="100" aria-label="Recipient's username2" />
+                                                    <label className="input-group-text">шт.</label>
+                                                </div>
+                                                <small className="text-danger mt-2">{editAvilableError && 'Пожалуйста, введите количесвто товара'}</small>
                                             </div>
-                                            <div className="input-group mb-3">
-                                                <label className="input-group-text">Изображение</label>
-                                                <input type="text" className="form-control" placeholder="https://mamcupy.com/upload/resize_cache/iblock/b19/600_600_240cd750bba9870f18aada2478b24840a/b1917d53ca3c5981d3daeadb91e1b12d.jpg" />
+                                            <div className="input-group mb-3 d-flex flex-column">
+                                                <div className='d-flex'>
+                                                    <label className="input-group-text">Изображение</label>
+                                                    <input type="file" className="form-control" ref={fileEditInputRef} accept="image/*" placeholder="" onChange={(e) => handleImageChange(e, 2)} />
+                                                </div>
+                                                <small className="text-danger mt-2">{editImageError && 'Пожалуйста, выберите изображение'}</small>
                                             </div>
                                             <div className="input-group mb-3">
                                                 <label className="input-group-text" htmlFor="inputGroupSelect02">Таблица</label>
-                                                <select className="form-select" id="inputGroupSelect02">
-                                                    <option>discounts</option>
-                                                    <option value="1">items</option>
-                                                    <option value="2">novelty</option>
-                                                    <option value="3">products</option>
+                                                <select className="form-select" onChange={e => { setEditTable(e.target.value) }} value={editTable} id="inputGroupSelect03">
+                                                    <option value="discounts">discounts</option>
+                                                    <option value="items">items</option>
+                                                    <option value="novelty">novelty</option>
+                                                    <option value="products">products</option>
                                                 </select>
                                             </div>
-                                            <button className="btn btn-outline-success w-100" type="button" id="button-add">Изменить</button>
+                                            <button className="btn btn-outline-success w-100" type="button" onClick={handleChange} id="button-add">Изменить</button>
                                         </Col>
                                     ) : selectedForm == 3 ? (
                                         <Col>
@@ -491,9 +599,21 @@ export default function UserProfile(props) {
                                                 </select>
                                             </div>
                                             <div className="input-group mb-3">
-                                                <label className="input-group-text">ID</label>
-                                                <input type="number" className="form-control" onChange={inputDelValue} value={delValue} placeholder="1" aria-label="Recipient's username" aria-describedby="button-addon2" />
-                                                <button className="btn btn-outline-danger" onClick={handleDelete} type="button" id="button-del">Удалить</button>
+                                                <div className='d-flex w-100'>
+                                                    <label className="input-group-text">ID</label>
+                                                    <input type="number" className="form-control" onChange={inputDelValue} value={delValue} placeholder="1" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                                                    <button className="btn btn-outline-danger" onClick={handleDelete} type="button" id="button-del">Удалить</button>
+                                                </div>
+                                                <small className="text-danger mt-2">{delError && 'Пожалуйста, введите ID товара больше 0'}</small>
+                                            </div>
+                                            <div className="input-group mb-3">
+                                                <label className="input-group-text" htmlFor="inputGroupSelect03">Таблица</label>
+                                                <select className="form-select" onChange={e => { setDelTable(e.target.value) }} value={delTable} id="inputGroupSelect03">
+                                                    <option value="discounts">discounts</option>
+                                                    <option value="items">items</option>
+                                                    <option value="novelty">novelty</option>
+                                                    <option value="products">products</option>
+                                                </select>
                                             </div>
                                         </Col>
                                     ) :
@@ -543,7 +663,7 @@ export default function UserProfile(props) {
                     )}
                 </Row>
                 <ToastContainer className='position-fixed mb-2 me-2' position="bottom-end">
-                    <Toast onClose={() => setShow(false)} show={show} delay={3000} bg={message === 'Продукт успешно добавлен!' || message === 'Заказ подтвержден!' ? 'success' : 'danger'} autohide>
+                    <Toast onClose={() => setShow(false)} show={show} delay={3000} bg={message === 'Продукт успешно обновлен!' || message === 'Продукт успешно добавлен!' || message === 'Заказ подтвержден!' ? 'success' : 'danger'} autohide>
                         <Toast.Header>
                             <div className="header__logo me-2"><svg width="15" height="15" viewBox="0 0 63 58" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30.1279 21.8721L17.6768 22.918V14.2021L12.6963 14.6006V44.4834L17.6768 44.085V40.3496L15.1865 40.5488V28.0977L30.1279 26.8525V55.4902L0.245117 57.9805V3.19531L30.1279 0.705078V21.8721Z" fill="black"></path><path d="M45.0693 44.4834L50.0498 44.085V35.3691L45.0693 35.7676V44.4834ZM50.0498 14.2021L45.0693 14.6006V23.3164L50.0498 22.918V14.2021ZM62.501 31.833V55.4902L32.6182 57.9805V3.19531L62.501 0.705078V24.3623L58.7656 28.0977L62.501 31.833Z" fill="black"></path></svg></div>
                             <strong className="me-auto ">GenaBooker</strong>

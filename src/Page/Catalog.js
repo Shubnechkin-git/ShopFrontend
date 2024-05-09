@@ -9,8 +9,8 @@ export default function Catalog(props) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = () => {
-    axios.get(`/catalog`)
+  const fetchData = (type = 'DESC') => {
+    axios.get(`/catalog`, { params: { sortType: type } })
       .then(response => {
         console.log(response.data);
         setItems(response.data);
@@ -21,6 +21,15 @@ export default function Catalog(props) {
         setLoading(false);
       });
   }
+
+  const onSortChange = (value) => {
+    setItems([]);
+    fetchData(value);
+  }
+
+  // ASC - Цена по возрастанию
+  // DESC - Цена по по убыванию
+
   useEffect(() => {
     // Загрузка данных при монтировании
     fetchData();
@@ -35,7 +44,7 @@ export default function Catalog(props) {
   return (
     <>
       <title>Каталог</title>
-      <Filters />
+      <Filters onSortChange={onSortChange} />
       <div className="mt-3"></div>
       <Row>
         {loading ? (
