@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Item(props) {
-    const { img, title, price, category, pageRu, pageEn, productId, available } = props;
+    const { img, title, price, category, pageRu, pageEn, productId, available, description } = props;
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -75,7 +75,8 @@ function Item(props) {
                         pageEn: pageEn,
                         category: category,
                         productId: productId,
-                        available: available
+                        available: available,
+                        description: description
                     }
                     }
                 >

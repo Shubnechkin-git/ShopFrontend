@@ -6,9 +6,9 @@ import axios from 'axios'
 export default function Home() {
 
     return (
-        <>
+        <div id='home'>
             <title>Главная</title>
             <Items />
-        </>
+        </div>
     )
 }

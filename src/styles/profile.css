@@ -18,3 +18,10 @@
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
 }
+
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
+}

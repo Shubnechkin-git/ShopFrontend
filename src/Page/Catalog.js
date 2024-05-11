@@ -10,7 +10,7 @@ export default function Catalog(props) {
   const [loading, setLoading] = useState(true);
 
   const fetchData = (type = 'DESC') => {
-    axios.get(`/catalog`, { params: { sortType: type } })
+    axios.get(`/get_catalog`, { params: { sortType: type } })
       .then(response => {
         console.log(response.data);
         setItems(response.data);
@@ -53,7 +53,7 @@ export default function Catalog(props) {
           Array.isArray(items) && items.length > 0 ? (
             items.map((item) => (
               item.available > 0 && (
-                <CatalogItems key={item.title} available={item.available} title={item.title} price={item.price} productId={item.id} img={item.img} />
+                <CatalogItems key={item.title} available={item.available} title={item.title} price={item.price} productId={item.id} img={item.img} description={item.description}/>
               )
             ))
           ) : (

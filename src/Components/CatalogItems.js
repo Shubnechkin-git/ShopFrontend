@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function CatalogItems(props) {
     return (
-        <Col className="card_item col-sm-12 col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 mb-5">
+        <Col className="card_item col-sm-12 col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 mb-4">
             <Link
                 className="text-decoration-none h-100 fs-2 fw-bold text-black nav-link"
                 to={{
@@ -18,7 +18,8 @@ export default function CatalogItems(props) {
                     pageRu: '',
                     category: 'Каталог',
                     productId: props.productId,
-                    available: props.available
+                    available: props.available,
+                    description: props.description
                 }}
             >
                 <div className='thumbs h-100'>
@@ -30,7 +31,7 @@ export default function CatalogItems(props) {
                         <span className="caption__info"><button className='btn btn-dark'>ПОДРОБНЕЕ</button></span>
                     </div>
                     <div className='caption_price'>
-                        <span>{props.price}руб.</span>
+                        <span id='price'>{props.price}руб.</span>
                     </div>
                 </div>
             </Link>

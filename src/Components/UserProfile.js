@@ -11,6 +11,7 @@ export default function UserProfile(props) {
     const [newTitle, setNewTitle] = useState('');
     const [newPriceValue, setNewPriceValue] = useState(null);
     const [newAvilable, setNewAvilable] = useState(null);
+    const [newDescription, setNewDescription] = useState(null);
 
     const [delError, setDelError] = useState(null);
 
@@ -19,6 +20,7 @@ export default function UserProfile(props) {
     const [editAvilable, setEditAvilable] = useState(null);
     const [editTitle, setEditTitle] = useState('');
     const [editImage, setEditImage] = useState(null);
+    const [editDescription, setEditDescription] = useState(null);
 
     const [editIdValueError, setEditIdValueError] = useState('');
     const [editAvilableError, setEditAvilableError] = useState('');
@@ -248,7 +250,7 @@ export default function UserProfile(props) {
         }
 
         if (!error) {
-            axios.post('/add_product', { newTitle, newPriceValue, newAvilable, imageBase64, table }).then(response => {
+            axios.post('/add_product', { newTitle, newPriceValue, newAvilable, imageBase64, table, description: newDescription }).then(response => {
                 console.log(response.data);
                 if (response.data.success) {
                     setShow(true);
@@ -265,6 +267,8 @@ export default function UserProfile(props) {
 
     const handleChange = () => {
         let error = false;
+
+        console.log(editDescription);
 
         if (editIdValue == null) {
             setEditIdValueError(true);
@@ -293,7 +297,7 @@ export default function UserProfile(props) {
         } else setEditImageError(false);
 
         if (!error) {
-            axios.put('/edit_product', { id: editIdValue, title: editTitle, price: editPriceValue, available: editAvilable, img: editImageBase64, table: editTable }).then(response => {
+            axios.put('/edit_product', { id: editIdValue, title: editTitle, price: editPriceValue, available: editAvilable, img: editImageBase64, table: editTable, description: editDescription }).then(response => {
                 console.log(response.data);
                 if (response.data.success) {
                     setShow(true);
@@ -368,8 +372,8 @@ export default function UserProfile(props) {
                     <Col md={4}>
                         <h2> Профиль пользователя</h2>
                         <Card className="text-center">
-                            <Card.Header>
-                                <Card.Img variant="top" ref={userIamge} src="https://yt3.googleusercontent.com/ytc/AOPolaShhy6N3HJYzxeMCeiVGh1smHOlqcWa-PHNKxYT5w=s900-c-k-c0x00ffffff-no-rj" />
+                            <Card.Header className='p-4'>
+                                <Card.Img variant="top" className='img-fluid p-2' ref={userIamge} src="https://yt3.googleusercontent.com/ytc/AOPolaShhy6N3HJYzxeMCeiVGh1smHOlqcWa-PHNKxYT5w=s900-c-k-c0x00ffffff-no-rj" />
                             </Card.Header>
                             <Card.Body>
                                 <Card.Title>{userInfo.username}</Card.Title>
@@ -397,6 +401,7 @@ export default function UserProfile(props) {
                                                     <th scope="col">id</th>
                                                     <th scope="col">Название</th>
                                                     <th scope="col">Цена</th>
+                                                    <th scope="col">Описание</th>
                                                     <th scope="col">Изображение</th>
                                                     <th scope="col">В наличие</th>
                                                     <th scope="col">Таблица</th>
@@ -411,6 +416,7 @@ export default function UserProfile(props) {
                                                                 <td scope="row">{item.id}</td>
                                                                 <td>{item.title}</td>
                                                                 <td>{item.price}</td>
+                                                                <td>{item.description !== 'null' ? item.description : null}</td>
                                                                 <td>
                                                                     <img className='img-fluid' style={{ height: 100, width: 100 }} src={item.img}></img>
                                                                 </td>
@@ -517,6 +523,12 @@ export default function UserProfile(props) {
                                                 </div>
                                                 <small className="text-danger mt-2">{imageError && 'Пожалуйста, выберите изображение'}</small>
                                             </div>
+                                            <div className="input-group mb-3 d-flex flex-column">
+                                                <div className='d-flex w-100'>
+                                                    <label className="input-group-text">Описание</label>
+                                                    <textarea className="form-control" placeholder="Описание товара(не обязательно)" onChange={e => setNewDescription(e.target.value)} value={newDescription}></textarea>
+                                                </div>
+                                            </div>
                                             <div className="input-group mb-3">
                                                 <label className="input-group-text" htmlFor="inputGroupSelect03">Таблица</label>
                                                 <select className="form-select" onChange={e => { setTable(e.target.value) }} value={table} id="inputGroupSelect03">
@@ -575,6 +587,12 @@ export default function UserProfile(props) {
                                                     <input type="file" className="form-control" ref={fileEditInputRef} accept="image/*" placeholder="" onChange={(e) => handleImageChange(e, 2)} />
                                                 </div>
                                                 <small className="text-danger mt-2">{editImageError && 'Пожалуйста, выберите изображение'}</small>
+                                            </div>
+                                            <div className="input-group mb-3 d-flex flex-column">
+                                                <div className='d-flex w-100'>
+                                                    <label className="input-group-text">Описание</label>
+                                                    <textarea className="form-control" placeholder="Описание товара(не обязательно)" onChange={e => setEditDescription(e.target.value)} value={editDescription}></textarea>
+                                                </div>
                                             </div>
                                             <div className="input-group mb-3">
                                                 <label className="input-group-text" htmlFor="inputGroupSelect02">Таблица</label>

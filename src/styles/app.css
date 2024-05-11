@@ -16,3 +16,28 @@ body {
 .hidden {
     display: none;
 }
+
+#price {
+    text-shadow: 1px 0 1px #000,
+        0 1px 1px #000,
+        -1px 0 1px #000,
+        0 -1px 1px #000;
+}
+
+.thumbs {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+img {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}

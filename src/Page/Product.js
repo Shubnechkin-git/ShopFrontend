@@ -18,10 +18,10 @@ export default function Product(props) {
     }
   }, [location.state]);
   if (!productData) {
-    return <div>Загрузка данных...</div>;
+    return <div>Товар не найден!</div>;
   }
 
-  const { img, price, title, category, pageRu, pageEn, productId, available } = location.state;
+  const { img, price, title, category, pageRu, pageEn, productId, available, description } = location.state;
 
   const checkSession = async () => {
     try {
@@ -100,7 +100,11 @@ export default function Product(props) {
             <h2 className='text-uppercase fw-bold mt-3'>{price} руб.</h2>
             <h5 className='text-uppercase fw-bold mt-3'>В наличие: {available}</h5>
             <span className='fs-4'>
-              Sunt cillum velit commodo proident cupidatat nisi nulla culpa nisi ullamco nostrud. Labore exercitation pariatur consequat voluptate laborum eiusmod est laboris aute non minim. Eu consequat veniam in aliquip mollit. Deserunt magna dolore anim non ex ipsum nulla.
+              {description != '' && description !== 'null' ? (
+                description
+              ) : (
+                null
+              )}
             </span>
             <Form.Group className="mt-3 mb-3">
               <Form.Label>
