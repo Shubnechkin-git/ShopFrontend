@@ -13,7 +13,7 @@ export default function SwiperMy(props) {
                 spaceBetween={20}
                 slidesPerView={'auto'}
                 slidesPerGroup={1}
-                className='ps-4 pe-4'
+                className='ps-5 pe-5'
                 pagination={{ el: '.paginnation', clickable: true, type: "progressbar" }}
                 breakpoints={{
                     0: {
